@@ -22,42 +22,44 @@ const PIP_LAYOUTS = {
     6: [1, 3, 4, 6, 7, 9]
 };
 
-function Domino(left, right) {
-    this.left = left;
-    this.right = right;
-    this.isDouble = (left === right);
-    this.totalPips = left + right;
+class Domino{
+   constructor (left, right) {
+        this.left = left;
+        this.right = right;
+        this.isDouble = (left === right);
+        this.totalPips = left + right;
+    }
 }
 
-export const gameLogic = {
-    dominoes: [],
-    firstPick: -1,   // index of the first domino picked, -1 if none yet
-    secondPick: -1,  // index of the second domino picked, -1 if none yet
-    cleared: 0,      // number of dominos cleared so far
-    turns: 0,        // number of turns taken so far
+export class GameLogic  {
+    dominoes = [];
+    firstPick = -1;  // index of the first domino picked, -1 if none yet
+    secondPick = -1;  // index of the second domino picked, -1 if none yet
+    cleared = 0;      // number of dominos cleared so far
+    turns = 0;        // number of turns taken so far
 
     // Fills the dominoes array with a fixed curated set of 15 dominos:
     //   3 doubles (removed instantly) + 6 non-double pairs that each sum to 12.
-    fillDominoes: function() {
+    fillDominoes() {
         this.dominoes.push(new Domino(6,6), new Domino(1,1), new Domino(4,4),
          new Domino(4,3), new Domino(3,2), new Domino (6,4), 
          new Domino(2,0), new Domino(1,5), new Domino(4,2), 
          new Domino(0,1), new Domino(6,5), new Domino(4,1), 
          new Domino(6,1), new Domino(5,4), new Domino(2,1));
         
-    }, //DONE!!
+    } //DONE!!
 
     // Shuffles the elements in the dominoes array.
-    shuffleDominoes: function() {
+    shuffleDominoes() {
           for (let i = 0; i < this.dominoes.length; i++) {
         let rndIndex = Math.floor(Math.random() * this.dominoes.length);
         let temp = this.dominoes[i];
         this.dominoes[i] = this.dominoes[rndIndex];
         this.dominoes[rndIndex] = temp;
-    }}, //DONE!!
+    }} //DONE!!
 
     // Records a player's domino pick.
-    pickDomino: function(index) {
+    pickDomino(index) {
         if (this.firstPick === -1){ this.firstPick = index
 
         }else{
@@ -65,17 +67,17 @@ export const gameLogic = {
             this.secondPick = index;
         }
         //DONE!!!!
-    },
+    }
 
     // Resets the picks for the next turn.
-    resetPicks: function() {
+    resetPicks() {
 
        this.firstPick = -1;
        this.secondPick = -1;
-    }, //DONE!!
+    } //DONE!!
 
     // Returns true when the two picked non-double dominos sum to exactly 12 pips.
-    isMatch: function() {
+    isMatch() {
         let hasMatched = false;
         if (this.dominoes[this.firstPick].totalPips+ this.dominoes[this.secondPick].totalPips === 12) {
             hasMatched = true;

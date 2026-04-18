@@ -1,6 +1,6 @@
 import Game from './models/Game.js';
 // Written by Brian Bird, 4/10/2026 with AI assistance from Gemini 3.1 in Antigravity.
-
+// Blake Gilmore 4/17/26. AI used to help tutor and debug
 // ---- Module State & DOM Elements ---- //
 const game = new Game();
 
@@ -101,17 +101,13 @@ function updateUI() {
     nextTurnBtn.classList.toggle('hidden', game.rollsLeft === 3);
 
     // Dynamic Button text for keeping score
-    if (game.diceSet.isQualified()) {
-        const cargo = game.diceSet.getCurrentCargoScore();
-        nextTurnBtn.textContent = `Keep Score: ${cargo} & End Turn`;
-    } else {
-        nextTurnBtn.textContent = `End Turn (Score: 0)`;
-    }
+    
+        const score = game.diceSet.getCurrentGameScore();
+        nextTurnBtn.textContent = `Keep Score: ${score} & End Turn`;
+  
 }
 
-// Physically builds the 5 HTML dice elements on the screen.
-// We completely clear and rebuild the container each time to ensure the UI
-// perfectly reflects the current state of the Game model's `dice` array.
+
 function renderDice() {
     diceContainer.innerHTML = '';
     
@@ -129,43 +125,13 @@ function renderDice() {
         const dieEl = document.createElement('div');
         dieEl.className = 'die';
         
-        // Allow the player to manually interact with the dice to set their own holds.
-        dieEl.addEventListener('click', () => {
-            if (isFirstRoll) return; // Cannot hold before the game starts
-            
-            // Check legality of the click before allowing the hold
-            if (!die.isHeld) {
-                const validation = game.diceSet.canHold(die);
-                if (validation !== true) {
-                    showMessage(validation);
-                    return;
-                }
-            } else {
-                const validation = game.diceSet.canUnhold(die);
-                if (validation !== true) {
-                    showMessage(validation);
-                    return;
-                }
-            }
-            
-            showMessage(""); // Clear any previous error message on a success
-            die.toggleHold();
-            game.diceSet.evaluateDice(); // Check if this new hold triggers a qualifier!
-            
-            // Re-render the UI loop to reflect the new state
-            renderDice();
-            updateUI();
-        });
+        
+
         
         // Apply CSS classes based on the logical outcome of the die or the turn.
         if (die.isHeld) {
             dieEl.classList.add('held'); // Green background for a kept die 
-        } else if (game.diceSet.isQualified()) {
-            dieEl.classList.add('cargo'); // Automatically highlight non-held dice as Cargo!
-        } else if (game.hasBusted()) {
-            dieEl.classList.add('failed'); // Red background indicating a busted roll
         }
-        
         // Inject the appropriate HTML entity to graphically render the die face.
         if (isFirstRoll) {
             dieEl.textContent = '?';
@@ -177,7 +143,8 @@ function renderDice() {
         
         diceContainer.appendChild(dieEl);
     }
-}
+}   
+
 
 function showScoreboard() {
     switchScreen(gameScreen, scoreboardScreen);

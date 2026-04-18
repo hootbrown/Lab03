@@ -1,7 +1,7 @@
 //Blake Gilmore 4/11
 
-import {ui} from "./ui.js";
-import {gameLogic} from "./gameLogic.js";
+import {Ui} from "./ui.js";
+import {GameLogic} from "./gameLogic.js";
 
 /*  Overview
     Double Trouble is a domino-clearing game with 15 dominos.
@@ -31,9 +31,11 @@ const PIP_LAYOUTS = {
 // -------------------- Main Flow --------------------
 // These functions act as the "glue" between the game logic and the UI
 // which are defined in sections below.
-
+const gameLogic = new GameLogic();
+const ui = new Ui();// ADDED
 // Initializes the page after it's loaded.
 const init = () => {
+    
     ui.cacheDominoElements();
     gameLogic.fillDominoes();
     gameLogic.shuffleDominoes();

@@ -1,7 +1,7 @@
 import DiceSet from './DiceSet.js';
 import Player from './Player.js';
 // Written by Brian Bird, 4/10/2026 using Gemini 3.1 in Antigravity.
-
+// Blake Gilmore 4/17/26. AI used to help tutor and debug
 // This class represents the overall game state and logic. 
 export default class Game {
     constructor() {
@@ -49,16 +49,16 @@ export default class Game {
         return this.rollsLeft === 0;
     }
 
-    hasBusted() {
+    //hasBusted() {
         // Instead of evaluating their currently selected score (which might be 0 just because they haven't clicked yet),
         // we check if their physical board has the POTENTIAL to score. If not, they've definitively busted.
-        return this.isTurnOver() && !this.diceSet.canPotentiallyQualify();
-    }
+       // return this.isTurnOver() && !this.diceSet.canPotentiallyQualify();
+    
 
     endTurn() {
         // Save score for current player via its setter to respect encapsulation.
         const currentPlayer = this.getCurrentPlayer();
-        currentPlayer.setScore(this.diceSet.getCurrentCargoScore());
+        currentPlayer.setScore(this.diceSet.getCurrentGameScore());
 
         // Advance to next player or end game
         this.currentPlayerIndex++;

@@ -1,3 +1,4 @@
+// Blake Gilmore 4/17/26. AI used to help tutor and debug
 import Die from './Die.js';
 
 export default class DiceSet {
